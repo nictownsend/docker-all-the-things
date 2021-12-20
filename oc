@@ -1,0 +1,8 @@
+#!/bin/sh
+TTY=-i
+if echo "${@}" | grep -E "exec|edit" -q
+then
+  TTY=-it
+fi
+CMD=$(echo "${@}" | sed "s#-f *$(pwd)\(.*\)#-f /workdir\1#g")
+docker run "${TTY}" -v "$(pwd)":/workdir -w /workdir  -v ~/.kube/config:/root/.kube/config openshift/origin-cli:v4.0 oc ${CMD}
