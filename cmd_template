@@ -1,2 +1,2 @@
-#!/bin/sh
+#!/bin/bash
 docker run -v "$(pwd)":/workdir -w /workdir "${IMAGE}" "${BASE_CMD}" "${@}"

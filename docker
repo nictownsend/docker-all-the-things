@@ -1,7 +1,12 @@
 #!/bin/bash
 set -e
+if [ -n "$DOCKER_REMOTE" ]; then
 IP="$(ifconfig utun2 | grep "inet " | grep -v 127.0.0.1 | cut -d\  -f2)"
 printf "\e[33mConnecting to remote docker\e[0m\n" 1>&2
-ssh root@nic-remote-docker1.fyre.ibm.com "sh sshfs.sh ${IP}"
+ssh root@nic-docker-remote1.fyre.ibm.com -i ~/.ssh/remote-docker "sh sshfs.sh ${IP}"
 printf "Running command: \e[95mdocker %s\e[0m\n" "$*" 1>&2
+/usr/local/bin/docker context use remote >/dev/null
+else 
+/usr/local/bin/docker context use default >/dev/null
+fi
 /usr/local/bin/docker "${@}"
