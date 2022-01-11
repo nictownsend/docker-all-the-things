@@ -1,2 +1,2 @@
 #!/bin/sh
-docker run -v "$(pwd)":/home/tools/workspace -v "$HOME"/.m2:/home/tools/.m2 -it maven:3.6.3 "${@}"
+docker run -v "$(pwd)":/home/tools/workspace -v "$HOME"/.m2:/root/.m2 -w /home/tools/workspace -it maven:3.6.3 mvn "${@}"

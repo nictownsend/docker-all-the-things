@@ -1,3 +1,3 @@
-#!/bin/sh
-
-~/bin/node_base node "${@}"
+#!/bin/bash
+BASE="$(dirname "${BASH_SOURCE[0]}")"
+"${BASE}"/node_base node "${@}"
