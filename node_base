@@ -3,4 +3,4 @@ EXPOSE_PORTS=()
 
 grep -q "run" <<< "${@}" && EXPOSE_PORTS=(-p 3000:3000)
 
-docker run -it "${EXPOSE_PORTS[@]}" -v "$(pwd)":/workdir -v node_modules:/usr/npm_global -v "${HOME}"/.npmrc:/root/.npmrc -w /workdir node:14 sh -c "export PATH=\$PATH:/usr/npm_global/bin; ${*}"
+docker run -it "${EXPOSE_PORTS[@]}" -v "$(pwd)":/workdir -v node_modules:/usr/npm_global -v "${HOME}"/.npmrc:/root/.npmrc -w /workdir localhost:5000/node sh -c "export PATH=\$PATH:/usr/npm_global/bin; ${*}"
