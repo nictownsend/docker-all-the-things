@@ -1,0 +1,3 @@
+#!/bin/bash
+BASE="$(dirname "${BASH_SOURCE[0]}")"
+"${BASE}"/node_base yarn "${@}"
