@@ -4,5 +4,4 @@ BASE="$(dirname "${BASH_SOURCE[0]}")"
 
 grep -q "run" <<< "${@}" && EXPOSE_PORTS=(-p 3000:3000 -p 3001:3001 -p 3010:3010)
 
-docker rm node 1>/dev/null 2>&1
-docker run --name node -u "$(id -u):$(id -g)" -it "${EXPOSE_PORTS[@]}" -v users:/Users -v node_modules:/usr/npm_global -v "${HOME}"/.npm:/home/node/.npm -v "${HOME}"/.npmrc:/home/node/.npmrc -v "${HOME}"/.git:/home/node/.git -v "${HOME}"/.gitconfig:/hone/node/.gitconfig -w "${PWD}" --security-opt seccomp="${BASE}/chrome_seccomp.json"  -e npm_config_cache=/home/node/.npm  -e npm_config_userconfig=/home/node/.npmrc localhost:5000/node sh -c "export PATH=\$PATH:/usr/npm_global/bin; ${*}"
+docker run -u "$(id -u):$(id -g)" -it "${EXPOSE_PORTS[@]}" -v users:/Users -v node_modules:/usr/npm_global -v "${HOME}"/.npm:/home/node/.npm -v "${HOME}"/.npmrc:/home/node/.npmrc -v "${HOME}"/.git:/home/node/.git -v "${HOME}"/.gitconfig:/home/node/.gitconfig -w "${PWD}" --security-opt seccomp="${BASE}/chrome_seccomp.json"  -e npm_config_cache=/home/node/.npm  -e npm_config_userconfig=/home/node/.npmrc localhost:5000/node sh -c "export PATH=\$PATH:/usr/npm_global/bin; ${*}"

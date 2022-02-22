@@ -1,12 +1,30 @@
 #!/bin/bash
-set -e
+BASE="$(dirname "${BASH_SOURCE[0]}")"
+ENV_FILE="${BASE}/.env"
+
 if [ -n "$DOCKER_REMOTE" ]; then
-IP="$(ifconfig utun2 | grep "inet " | grep -v 127.0.0.1 | cut -d\  -f2)"
-printf "\e[33mConnecting to remote docker\e[0m\n" 1>&2
-ssh root@nic-docker-remote1.fyre.ibm.com -i ~/.ssh/remote-docker "sh sshfs.sh ${IP}"
-printf "Running command: \e[95mdocker %s\e[0m\n" "$*" 1>&2
-/usr/local/bin/docker context use remote >/dev/null
+  IP="$(ifconfig utun2 | grep "inet " | grep -v 127.0.0.1 | cut -d\  -f2)"
+  printf "\e[33mConnecting to remote docker\e[0m\n" 1>&2
+  ssh root@nic-docker-remote1.fyre.ibm.com -i ~/.ssh/remote-docker "sh sshfs.sh ${IP}"
+  printf "Running command: \e[95mdocker %s\e[0m\n" "$*" 1>&2
+  /usr/local/bin/docker context use remote >/dev/null
 else 
-/usr/local/bin/docker context use default >/dev/null
+  /usr/local/bin/docker context use default >/dev/null
 fi
-/usr/local/bin/docker "${@}"
+
+CMD=("$@")
+
+len=${#CMD[@]}
+ENVVARS=("--env-file" "${ENV_FILE}")
+for i in "${!CMD[@]}"; do
+   if [[ "${CMD[$i]}" = "run" ]]; then
+       (( offset=len-i-1 ))
+       CMD=("${CMD[@]:0:i+1}" "${ENVVARS[@]}" "${CMD[@]: -offset}")
+      env | grep -v "PATH" > "${ENV_FILE}"
+       break
+   fi
+done
+
+/usr/local/bin/docker "${CMD[@]}"
+
+if [ -f "${ENV_FILE}" ]; then rm "${ENV_FILE}"; fi;
