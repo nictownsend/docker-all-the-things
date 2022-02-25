@@ -1,5 +1,6 @@
 #!/bin/bash
-EXPOSE_PORTS=()
+# EXPOSE_PORTS=( -p 3001:3001)
+# EXPOSE_PORTS=()
 BASE="$(dirname "${BASH_SOURCE[0]}")"
 
 grep -q "run" <<< "${@}" && EXPOSE_PORTS=(-p 3000:3000 -p 3001:3001 -p 3010:3010)

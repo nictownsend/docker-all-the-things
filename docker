@@ -1,6 +1,5 @@
 #!/bin/bash
-BASE="$(dirname "${BASH_SOURCE[0]}")"
-ENV_FILE="${BASE}/.env"
+ENV_FILE="/tmp/.env"
 
 if [ -n "$DOCKER_REMOTE" ]; then
   IP="$(ifconfig utun2 | grep "inet " | grep -v 127.0.0.1 | cut -d\  -f2)"
@@ -20,7 +19,7 @@ for i in "${!CMD[@]}"; do
    if [[ "${CMD[$i]}" = "run" ]]; then
        (( offset=len-i-1 ))
        CMD=("${CMD[@]:0:i+1}" "${ENVVARS[@]}" "${CMD[@]: -offset}")
-      env | grep -v "PATH" > "${ENV_FILE}"
+       env | grep -Ev "PATH|JAVA" > "${ENV_FILE}"
        break
    fi
 done
