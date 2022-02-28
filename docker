@@ -18,12 +18,11 @@ ENVVARS=("--env-file" "${ENV_FILE}")
 for i in "${!CMD[@]}"; do
    if [[ "${CMD[$i]}" = "run" ]]; then
        (( offset=len-i-1 ))
-       CMD=("${CMD[@]:0:i+1}" "${ENVVARS[@]}" "${CMD[@]: -offset}")
-       env | grep -Ev "PATH|JAVA" > "${ENV_FILE}"
+       CMD=("${CMD[@]:0:i+1}" -v "${HOME}":"${HOME}" -v /tmp:/tmp "${ENVVARS[@]}" "${CMD[@]: -offset}")
+       env | grep -Ev "PATH|JAVA|HOME" > "${ENV_FILE}"
        break
    fi
 done
-
 /usr/local/bin/docker "${CMD[@]}"
 
 if [ -f "${ENV_FILE}" ]; then rm "${ENV_FILE}"; fi;
