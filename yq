@@ -1,4 +1,4 @@
 #!/bin/bash
 IMAGE=mikefarah/yq:4
-BASE_CMD=
+echo ${@}
 docker run -v "$(pwd)":/workdir -w /workdir "${IMAGE}" "${BASE_CMD}" "${@}"

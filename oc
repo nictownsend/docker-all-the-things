@@ -2,5 +2,4 @@
 TTY=(-i)
 grep -E "exec|edit" -q <<< "${@}" &&  TTY=(-it)
 CMD=($(sed "s#-f *$(pwd)\(.*\)#-f /workdir\1#g" <<< "${@}"))
-docker run "${TTY[@]}" -w /workdir  -v ~/.kube/config:/root/.kube/config quay.io/openshift/origin-cli:4.8 oc "${CMD[@]}"
-exit "$(docker ps -al --format '{{.Status}}' | sed -e "s_.*(\(.*\)).*_\1_")"
+docker run "${TTY[@]}" -w /workdir -v "$(pwd)":/workdir -v ~/.kube/config:/root/.kube/config quay.io/openshift/origin-cli:4.8 oc "${CMD[@]}"
