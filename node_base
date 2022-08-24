@@ -7,5 +7,8 @@ if [ -n "${PORT}" ]; then
 EXPOSE_PORT=(-p "${PORT}:${PORT}")
 fi
 
-docker run -it "${EXPOSE_PORT[@]}" -v node_modules:/usr/local/lib/node_modules:delegated -v "/var/folders":"/var/folders" -w "${PWD}" --security-opt seccomp="${BASE}/chrome_seccomp.json"  -e npm_config_cache="${HOME}/.npm"  -e npm_config_userconfig="${HOME}/.npmrc" \
+docker run -i "${EXPOSE_PORT[@]}" -u 501:20 \
+-v yarn_global:/.yarn:delegated -v yarn_cache:/.cache:delegated -v node_global_modules:/usr/local/lib/node_modules:delegated -v "${HOME}/.gitconfig":/.gitconfig \
+-w "${PWD}" --security-opt seccomp="${BASE}/chrome_seccomp.json" \
+-e npm_config_cache="${HOME}/.npm"  -e npm_config_userconfig="${HOME}/.npmrc" \
 localhost:5000/node sh -c "${*}"

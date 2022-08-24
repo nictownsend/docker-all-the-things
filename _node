@@ -1,3 +1,4 @@
 #!/bin/bash
-BASE="$(dirname "${BASH_SOURCE[0]}")"
-"${BASE}"/node_base node "${@}"
+BASE_DIR=$(dirname "$(readlink -f "$0")")
+
+"${BASE_DIR}"/node_base node "${@}"
