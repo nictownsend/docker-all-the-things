@@ -1,6 +1,12 @@
 #!/bin/bash
 ENV_FILE="/tmp/.env"
 
+ARGS=()
+
+if [ -n "${DOCKER_ARGS}" ]; then
+IFS=' ' read -r -a ARGS <<< "${DOCKER_ARGS}"
+fi
+
 if [ -n "$DOCKER_REMOTE" ]; then
   IP="$(ifconfig utun2 | grep "inet " | grep -v 127.0.0.1 | cut -d\  -f2)"
   printf "\e[33mConnecting to remote docker\e[0m\n" 1>&2
@@ -20,7 +26,7 @@ for i in "${!CMD[@]}"; do
        env | grep -Ev "PATH|JAVA|HOME" > "${ENV_FILE}"
        env | grep DOCKER_ | sed 's/DOCKER_//' >> "${ENV_FILE}"      
        (( offset=len-i-1 ))
-       CMD=("${CMD[@]:0:i+1}" -v "${HOME}":"${HOME}:cached" -v /tmp:/tmp -v /var/folders:/var/folders "${ENVVARS[@]}" "${CMD[@]: -offset}")
+       CMD=("${CMD[@]:0:i+1}" -v "${HOME}":"${HOME}:cached" -v /tmp:/tmp -v /var/folders:/var/folders "${ARGS[@]}"  "${ENVVARS[@]}" "${CMD[@]: -offset}")
        break
    fi
 done
