@@ -1,6 +1,5 @@
 #!/bin/bash
 ENV_FILE="/tmp/.env"
-
 ARGS=()
 
 if [ -n "${DOCKER_ARGS}" ]; then
@@ -29,7 +28,7 @@ for i in "${!CMD[@]}"; do
        CMD=("${CMD[@]:0:i+1}" \
        -v "${HOME}":"${HOME}:cached" -v /tmp:/tmp -v /var/folders:/var/folders -v "${HOME}/.gitconfig":/.gitconfig \
        "${ARGS[@]}"  "${ENVVARS[@]}" "--init" \
-       "${CMD[@]: -offset}" )
+       "${CMD[@]: -offset}")
        break
    fi
 done

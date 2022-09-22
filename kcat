@@ -1,2 +1,2 @@
 #!/bin/bash
-docker run -v "$(pwd)":/workdir -w /workdir  edenhill/kcat kcat "${@}"
+docker run -v "$(pwd)":/workdir -w /workdir  edenhill/kcat  bash -c "kcat ${*}"

@@ -5,4 +5,4 @@ docker run -u 501:20 \
 -v yarn_global:/.yarn:delegated -v yarn_cache:/.cache:delegated -v "${HOME}/docker-volumes/.npm-global":/.npm-global \
 -w "${PWD}" --security-opt seccomp="${BASE}/chrome_seccomp.json" \
 -e npm_config_cache="${HOME}/.npm"  -e npm_config_userconfig="${HOME}/.npmrc" -e npm_config_prefix="/.npm-global" \
-localhost:5000/node "${@}"
+localhost:5000/node  bash -c "${@}"

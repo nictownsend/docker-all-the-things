@@ -1,2 +1,2 @@
 #!/bin/bash
-docker run -v "${HOME}"/.config/containers/auth.json:/tmp/auth.json quay.io/skopeo/stable:latest "${@}"
+docker run -v "${HOME}"/.config/containers/auth.json:/tmp/auth.json quay.io/skopeo/stable:latest  bash -c  "${@}"

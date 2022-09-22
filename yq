@@ -1,4 +1,3 @@
 #!/bin/bash
 IMAGE=mikefarah/yq:4
-echo ${@}
-docker run -v "$(pwd)":/workdir -w /workdir "${IMAGE}" "${BASE_CMD}" "${@}"
+docker run -v "$(pwd)":/workdir -w /workdir "${IMAGE}"  bash -c "yq ${*}"
