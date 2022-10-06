@@ -1,8 +1,14 @@
 #!/bin/bash
 
 BASE="$(dirname "${BASH_SOURCE[0]}")"
-docker run -u 501:20 \
--v yarn_global:/.yarn:delegated -v yarn_cache:/.cache:delegated -v "${HOME}/docker-volumes/.npm-global":/.npm-global \
--w "${PWD}" --security-opt seccomp="${BASE}/chrome_seccomp.json" \
--e npm_config_cache="${HOME}/.npm"  -e npm_config_userconfig="${HOME}/.npmrc" -e npm_config_prefix="/.npm-global" \
+
+docker run \
+-v "${HOME}":"${HOME}" -v yarn_global:/nic/yarn/.global -v yarn_cache:/nic/yarn/.cache \
+-v npm_global:/nic/npm/.npm_global -v var_folders:"/var/folders" \
+-v npm:/nic/npm/.npm \
+-w "${PWD}" \
+--net=host \
+--security-opt seccomp="${BASE}/chrome_seccomp.json" \
+-e npm_config_cache=/nic/npm/.npm  -e npm_config_userconfig="${HOME}/.npmrc" -e npm_config_prefix="/nic/npm/.global" \
+-e YARN_CACHE_FOLDER=/nic/yarn/.cache -e YARN_GLOBAL_FOLDER=/nic/yarn/.global \
 localhost:5000/node "${@}"

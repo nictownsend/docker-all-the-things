@@ -6,16 +6,6 @@ if [ -n "${DOCKER_ARGS}" ]; then
 IFS=' ' read -r -a ARGS <<< "${DOCKER_ARGS}"
 fi
 
-if [ -n "$DOCKER_REMOTE" ]; then
-  IP="$(ifconfig utun2 | grep "inet " | grep -v 127.0.0.1 | cut -d\  -f2)"
-  printf "\e[33mConnecting to remote docker\e[0m\n" 1>&2
-  ssh root@nic-docker-remote1.fyre.ibm.com -i ~/.ssh/remote-docker "sh sshfs.sh ${IP}"
-  printf "Running command: \e[95mdocker %s\e[0m\n" "$*" 1>&2
-  /usr/local/bin/docker context use remote >/dev/null
-else 
-  /usr/local/bin/docker context use default >/dev/null
-fi
-
 CMD=("$@")
 
 len=${#CMD[@]}
@@ -25,8 +15,9 @@ for i in "${!CMD[@]}"; do
        env | grep -Ev "PATH|JAVA|HOME" > "${ENV_FILE}"  
        (( offset=len-i-1 ))
        CMD=("${CMD[@]:0:i+1}" \
-       -v "${HOME}":"${HOME}:cached" -v /tmp:/tmp -v /var/folders:/var/folders -v "${HOME}/.gitconfig":/.gitconfig \
+       -v "${HOME}/.gitconfig:/.gitconfig":.gitconfig \
      "${ARGS[@]}"  "${ENVVARS[@]}" \
+     --init \
      "${CMD[@]: -offset}")
        break
    fi
