@@ -4,11 +4,12 @@ BASE="$(dirname "${BASH_SOURCE[0]}")"
 
 docker run \
 -v "${HOME}":"${HOME}" -v yarn_global:/nic/yarn/.global -v yarn_cache:/nic/yarn/.cache \
--v npm_global:/nic/npm/.npm_global -v var_folders:"/var/folders" \
+-v yarn_link:/nic/yarn/link -v npm_global:/nic/npm/.npm_global \
+-v global:/nic/npm/.global -v cypress:/root/.cache/Cypress \
 -v npm:/nic/npm/.npm -v "${HOME}"/.gitconfig:/root/.gitconfig \
+-v var_folders:"/var/folders" \
 -w "${PWD}" \
---net=host \
 --security-opt seccomp="${BASE}/chrome_seccomp.json" \
--e npm_config_cache=/nic/npm/.npm  -e npm_config_userconfig="${HOME}/.npmrc" -e npm_config_prefix="/nic/npm/.global" \
--e YARN_CACHE_FOLDER=/nic/yarn/.cache -e YARN_GLOBAL_FOLDER=/nic/yarn/.global \
+-e npm_config_cache="/nic/npm/.npm"  -e npm_config_userconfig="${HOME}/.npmrc" -e npm_config_prefix="/nic/npm/.global" \
+-e YARN_CACHE_FOLDER="/nic/yarn/.cache" -e YARN_GLOBAL_FOLDER="/nic/yarn/.global" \
 localhost:5000/node "${@}"

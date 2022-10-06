@@ -1,0 +1,12 @@
+#!/bin/bash
+
+alias k=kubectl
+alias icp=cloudctl
+alias ks="kubectl -n kube-system"
+alias gca="git commit --amend"
+alias gf="git fetch"
+alias gr="git rebase"
+alias gc="git checkout"
+alias gpo="git push origin"
+alias oca="oc --all-namespaces"
+alias dc="docker-compose"
