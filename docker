@@ -15,7 +15,6 @@ for i in "${!CMD[@]}"; do
        env | grep -Ev "PATH|JAVA|HOME" > "${ENV_FILE}"  
        (( offset=len-i-1 ))
        CMD=("${CMD[@]:0:i+1}" \
-       -v "${HOME}/.gitconfig:/.gitconfig":.gitconfig \
      "${ARGS[@]}"  "${ENVVARS[@]}" \
      --init \
      "${CMD[@]: -offset}")
