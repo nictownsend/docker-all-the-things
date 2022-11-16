@@ -2,15 +2,18 @@
 
 BASE="$(dirname "${BASH_SOURCE[0]}")"
 
+VOLUMES=${HOME}/volumes
+USER_HOME="/home/node"
+
 docker run \
--it \
--v yarn:/node/yarn \
--v npm:/node/npm \
--v var_folders:/var/folders \
--v "${HOME}/.gitconfig":/home/node/.gitconfig -v "${HOME}"/.gitmessage:/home/node/.gitmessage \
--v "${HOME}/.npmrc":/home/node/.npmrc  \
+-i \
+-v "${VOLUMES}/yarn":"${USER_HOME}/yarn" \
+-v "${VOLUMES}/npm":"${USER_HOME}/npm" \
+-v "${VOLUMES}/var/folders":/var/folders \
+-v "${HOME}/.gitconfig":"${USER_HOME}/.gitconfig" -v "${HOME}/.gitmessage":"${USER_HOME}/.gitmessage" \
+-v "${HOME}/.npmrc":"${USER_HOME}/.npmrc"  \
 -v "${PWD}":"${PWD}" \
 -w "${PWD}" \
--e npm_config_cache="/home/node/npm/.npm"  -e npm_config_userconfig="/home/node/.npmrc" -e npm_config_prefix="/home/node/npm/.global" \
--e YARN_CACHE_FOLDER="/home/node/yarn/.cache" -e YARN_GLOBAL_FOLDER="/home/node/yarn/.global" \
+-e npm_config_cache="${USER_HOME}/npm/.npm" -e npm_config_userconfig="${USER_HOME}/.npmrc" -e npm_config_prefix="${USER_HOME}/npm/.global" \
+-e YARN_CACHE_FOLDER="${USER_HOME}/yarn/.cache" -e YARN_GLOBAL_FOLDER="${USER_HOME}/yarn/.global" \
 localhost:5000/node "${@}"
