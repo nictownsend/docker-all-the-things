@@ -10,7 +10,7 @@ done
 
 mkdir -p "${HOME}/volumes"
 pushd "${HOME}/volumes"
-mkdir -p npm yarn cypress var/folders
+mkdir -p npm yarn cypress var/folders .cache pnpm
 pushd npm
 mkdir .npm .global
 popd

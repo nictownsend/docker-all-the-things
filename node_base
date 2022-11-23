@@ -1,14 +1,15 @@
 #!/bin/bash
 
-BASE="$(dirname "${BASH_SOURCE[0]}")"
-
 VOLUMES=${HOME}/volumes
 USER_HOME="/home/node"
 
 docker run \
 -i \
+--network host \
 -v "${VOLUMES}/yarn":"${USER_HOME}/yarn" \
 -v "${VOLUMES}/npm":"${USER_HOME}/npm" \
+-v "${VOLUMES}/cache":"${USER_HOME}/.cache" \
+-v "${VOLUMES}/pnpm":/pnpm \
 -v "${VOLUMES}/var/folders":/var/folders \
 -v "${HOME}/.gitconfig":"${USER_HOME}/.gitconfig" -v "${HOME}/.gitmessage":"${USER_HOME}/.gitmessage" \
 -v "${HOME}/.npmrc":"${USER_HOME}/.npmrc"  \
