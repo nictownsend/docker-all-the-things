@@ -9,7 +9,7 @@ docker run \
 -v "${VOLUMES}/yarn":"${USER_HOME}/yarn" \
 -v "${VOLUMES}/npm":"${USER_HOME}/npm" \
 -v "${VOLUMES}/cache":"${USER_HOME}/.cache" \
--v "${VOLUMES}/pnpm":/pnpm \
+-v "${VOLUMES}/pnpm":"${USER_HOME}/pnpm" \
 -v "${VOLUMES}/var/folders":/var/folders \
 -v "${HOME}/.gitconfig":"${USER_HOME}/.gitconfig" -v "${HOME}/.gitmessage":"${USER_HOME}/.gitmessage" \
 -v "${HOME}/.npmrc":"${USER_HOME}/.npmrc"  \
@@ -17,4 +17,5 @@ docker run \
 -w "${PWD}" \
 -e npm_config_cache="${USER_HOME}/npm/.npm" -e npm_config_userconfig="${USER_HOME}/.npmrc" -e npm_config_prefix="${USER_HOME}/npm/.global" \
 -e YARN_CACHE_FOLDER="${USER_HOME}/yarn/.cache" -e YARN_GLOBAL_FOLDER="${USER_HOME}/yarn/.global" \
+-e XDG_DATA_HOME="${USER_HOME}" \
 localhost:5000/node "${@}"
